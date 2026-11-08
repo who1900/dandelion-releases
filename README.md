@@ -1,9 +1,15 @@
-# Dandelion rc14: quick start for pilot testers
+# Dandelion rc15: quick start for pilot testers
 
 Dandelion gives your agent a map of project context linked to exact values and
 history. Studio lets you explore that memory visually.
 
-Try **one real project over two work sessions**, using **rc14 on Windows 11 with
+rc15 adds memory-curation guidance delivered through MCP and distinguishes agent
+fact submissions from Studio edits. Existing revisions keep their attribution.
+If you already use rc14, change only the wheel URL in the existing entry, keep
+your memory folder and reconnect yourself. Do not create a second entry or a new
+memory. The rc14 release remains available and unchanged.
+
+Try **one real project over two work sessions**, using **rc15 on Windows 11 with
 local Codex**. Other clients and platforms remain unverified.
 
 ## 1. Connect once
@@ -20,7 +26,7 @@ with doubled backslashes. Edit any existing Dandelion entry instead of duplicati
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "https://github.com/who1900/dandelion-releases/releases/download/v1.0.0rc14/dandelion-1.0.0rc14-py3-none-any.whl", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "https://github.com/who1900/dandelion-releases/releases/download/v1.0.0rc15/dandelion-1.0.0rc15-py3-none-any.whl", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
@@ -78,7 +84,7 @@ Mark unused features **not tried**.
 
 ```text
 Environment: Windows version, MCP client/version, agent/model
-Release: rc14
+Release: rc15
 Installation and Studio: worked / blocked / not tried; time or error
 Real task: one sentence
 New session: useful context recovered; missing or wrong details
@@ -94,7 +100,7 @@ Failed installations count as feedback too.
 ## If setup stops
 
 - **Download failed:** check access to the
-  [release page](https://github.com/who1900/dandelion-releases/releases/tag/v1.0.0rc14)
+  [release page](https://github.com/who1900/dandelion-releases/releases/tag/v1.0.0rc15)
   and keep the error. This setup does not require Git credentials.
 - **`uvx` not found:** in PowerShell run `(Get-Command uvx).Source`; use that
   absolute path as `command` in the entry, escaping backslashes as above.
@@ -103,6 +109,6 @@ Failed installations count as feedback too.
 
 Memory retains explicit agent writes; it does not automatically archive chats or
 guarantee correct answers. Team cloud sync is outside this pilot.
-Keep rc14 fixed during the pilot. A future update replaces only the release
+Keep rc15 fixed during the pilot. A future update replaces only the release
 wheel URL in the same MCP entry, followed by a normal reconnect; keep the same
 memory folder. Do not add a second server or change the memory path to update.
