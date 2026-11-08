@@ -5,7 +5,8 @@ history. Studio lets you explore that memory visually.
 
 rc15 adds memory-curation guidance delivered through MCP and distinguishes agent
 fact submissions from Studio edits. Existing revisions keep their attribution.
-If you already use rc14, change only the wheel URL in the existing entry, keep
+If you already use rc14, change only the `--from` value in the existing entry to
+`dandelion-memory==1.0.0rc15`, keep
 your memory folder and reconnect yourself. Do not create a second entry or a new
 memory. The rc14 release remains available and unchanged.
 
@@ -17,7 +18,7 @@ Other client/platform combinations remain outside the supported pilot.
 ## 1. Connect once
 
 You need [uv](https://docs.astral.sh/uv/getting-started/installation/) and local
-Codex. The package is downloaded automatically from a public release link;
+Codex. The package is downloaded automatically from PyPI;
 no Git installation, repository invitation or GitHub sign-in is needed.
 
 Create a permanent memory folder outside your source repository; it must exist
@@ -28,7 +29,7 @@ with doubled backslashes. Edit any existing Dandelion entry instead of duplicati
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "https://github.com/who1900/dandelion-releases/releases/download/v1.0.0rc15/dandelion-1.0.0rc15-py3-none-any.whl", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "dandelion-memory==1.0.0rc15", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
@@ -110,7 +111,7 @@ Failed installations count as feedback too.
 ## If setup stops
 
 - **Download failed:** check access to the
-  [release page](https://github.com/who1900/dandelion-releases/releases/tag/v1.0.0rc15)
+  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc15/)
   and keep the error. This setup does not require Git credentials.
 - **`uvx` not found:** in PowerShell run `(Get-Command uvx).Source`; use that
   absolute path as `command` in the entry, escaping backslashes as above.
@@ -119,6 +120,6 @@ Failed installations count as feedback too.
 
 Memory retains explicit agent writes; it does not automatically archive chats or
 guarantee correct answers. Team cloud sync is outside this pilot.
-Keep rc15 fixed during the pilot. A future update replaces only the release
-wheel URL in the same MCP entry, followed by a normal reconnect; keep the same
+Keep rc15 fixed during the pilot. A future update changes only the version in
+`dandelion-memory==...` in the same MCP entry, followed by a normal reconnect; keep the same
 memory folder. Do not add a second server or change the memory path to update.
