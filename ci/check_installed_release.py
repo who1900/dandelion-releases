@@ -32,7 +32,7 @@ async def connect(directory):
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer) as client:
             initialized = await client.initialize()
-            assert initialized.server_info.version == "1.0.0rc16"
+            assert initialized.server_info.version == "1.0.0rc17"
             yield client
 
 
@@ -40,7 +40,7 @@ async def check(directory):
     assert sys.flags.isolated
     package = Path(dandelion.__file__).resolve()
     assert "site-packages" in package.parts, package
-    assert dandelion.__version__ == "1.0.0rc16"
+    assert dandelion.__version__ == "1.0.0rc17"
     async with connect(directory) as client:
         fact = await call(client, "create_fact", {"subject": "demo.port", "value": "8080"})
         note = await call(client, "remember_typed", {
@@ -69,6 +69,6 @@ async def check(directory):
 if __name__ == "__main__":
     with tempfile.TemporaryDirectory(prefix="dandelion-portability-") as temp:
         asyncio.run(asyncio.wait_for(check(Path(temp)), timeout=90))
-    print(json.dumps({"status": "PASS", "release": "1.0.0rc16",
+    print(json.dumps({"status": "PASS", "release": "1.0.0rc17",
                       "platform": sys.platform, "python": sys.version.split()[0],
                       "scope": "installed stdio and Studio HTTP; not desktop client or agent quality"}))

@@ -1,20 +1,21 @@
-# Dandelion rc16: quick start for pilot testers
+# Dandelion rc17: quick start for pilot testers
 
 Dandelion gives your agent a map of project context linked to exact values and
 history. Studio lets you explore that memory visually.
 
-rc16 introduces Business Source License 1.1; memory behavior is unchanged from
-rc15. Production use is free when both your project team and your organization
-have 1–3 people, including commercial projects. Larger teams/organizations need
-Enterprise terms. [Read the license](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
+rc17 introduces Dandelion Software License 1.0; memory behavior is unchanged.
+Independent solo developers may use it free, including on their own commercial
+projects. Teams and use on behalf of organizations with other people require a
+commercial license. Team trials, redistribution and resale require permission.
+Contact danik1900@gmail.com. [Read the license](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
 before using the package. This is source-available software.
 
 If you already use an earlier release, change only the `--from` value in the existing entry to
-`dandelion-memory==1.0.0rc16`, keep
+`dandelion-memory==1.0.0rc17`, keep
 your memory folder and reconnect yourself. Do not create a second entry or a new
 memory. Existing data and historical attribution remain unchanged.
 
-Try **one real project over two work sessions**, using **rc16 on Windows 11 with
+Try **one real project over two work sessions**, using **rc17 on Windows 11 with
 local Codex**. The preceding rc15 [installed-package check](https://github.com/who1900/dandelion-releases/actions/runs/42515571580) also passed on Linux/macOS runners;
 this does not yet verify their desktop clients or interactive Studio experience.
 Other client/platform combinations remain outside the supported pilot.
@@ -33,7 +34,7 @@ with doubled backslashes. Edit any existing Dandelion entry instead of duplicati
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "dandelion-memory==1.0.0rc16", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "dandelion-memory==1.0.0rc17", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
@@ -99,7 +100,7 @@ Mark unused features **not tried**.
 
 ```text
 Environment: Windows version, MCP client/version, agent/model
-Release: rc16
+Release: rc17
 Installation and Studio: worked / blocked / not tried; time or error
 Real task: one sentence
 New session: useful context recovered; missing or wrong details
@@ -115,7 +116,7 @@ Failed installations count as feedback too.
 ## If setup stops
 
 - **Download failed:** check access to the
-  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc16/)
+  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc17/)
   and keep the error. This setup does not require Git credentials.
 - **`uvx` not found:** in PowerShell run `(Get-Command uvx).Source`; use that
   absolute path as `command` in the entry, escaping backslashes as above.
@@ -124,6 +125,6 @@ Failed installations count as feedback too.
 
 Memory retains explicit agent writes; it does not automatically archive chats or
 guarantee correct answers. Team cloud sync is outside this pilot.
-Keep rc16 fixed during the pilot. A future update changes only the version in
+Keep rc17 fixed during the pilot. A future update changes only the version in
 `dandelion-memory==...` in the same MCP entry, followed by a normal reconnect; keep the same
 memory folder. Do not add a second server or change the memory path to update.
