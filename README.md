@@ -10,7 +10,9 @@ your memory folder and reconnect yourself. Do not create a second entry or a new
 memory. The rc14 release remains available and unchanged.
 
 Try **one real project over two work sessions**, using **rc15 on Windows 11 with
-local Codex**. Other clients and platforms remain unverified.
+local Codex**. The [installed-package check](https://github.com/who1900/dandelion-releases/actions/runs/42515571580) also passed on Linux/macOS runners;
+this does not yet verify their desktop clients or interactive Studio experience.
+Other client/platform combinations remain outside the supported pilot.
 
 ## 1. Connect once
 
