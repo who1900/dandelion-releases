@@ -30,7 +30,15 @@ args = ["--isolated", "--from", "https://github.com/who1900/dandelion-releases/r
 startup_timeout_sec = 120
 ```
 
-Reconnect through Codex's MCP controls. The first connection downloads the package,
+Apply the configuration through Codex's MCP controls. In the verified desktop
+build, after changing the entry use **Restart** (the circular arrow beside
+**Servers**). The enable switch alone did not refresh an already open chat.
+Labels may differ between client versions. Ask the agent to call `domain_map`:
+an empty successful map is a valid first connection; an enabled switch alone
+is not confirmation. If tools remain unavailable, record the client version and
+error instead of repeatedly toggling or reinstalling.
+
+The first connection downloads the package,
 its dependencies and Python 3.13 if needed; internet access is required.
 **Studio is included**; no separate app, database or Dandelion API key is needed.
 
