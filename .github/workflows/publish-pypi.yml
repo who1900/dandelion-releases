@@ -1,0 +1,50 @@
+name: publish-pypi
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Existing release version (without v)
+        required: true
+        default: '1.0.0rc15'
+        type: string
+      sha256:
+        description: Reviewed wheel SHA-256
+        required: true
+        default: 'abb2f6e895797591e337e42c88dcae1f0658f671d6facc4eac0bc331ea55b408'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pypi-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Obtain the reviewed public release wheel
+        env:
+          VERSION: ${{ inputs.version }}
+          SHA256: ${{ inputs.sha256 }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+)?$ ]]
+          [[ "$SHA256" =~ ^[a-f0-9]{64}$ ]]
+          WHEEL="dandelion_memory-${VERSION}-py3-none-any.whl"
+          mkdir dist
+          gh release download "v${VERSION}" --pattern "$WHEEL" --dir dist
+          printf '%s  %s\n' "$SHA256" "dist/$WHEEL" | sha256sum --check --strict
+      - name: Publish through PyPI Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # release/v1
