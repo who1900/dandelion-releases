@@ -6,12 +6,12 @@ on:
       version:
         description: Existing release version (without v)
         required: true
-        default: '1.0.0rc17'
+        default: '1.0.0rc18'
         type: string
       sha256:
         description: Reviewed wheel SHA-256
         required: true
-        default: '1f3956d6ef6271ce25b72132eded32340b776aca5eef4126f9ea38ac3cf57cb3'
+        default: '2746c281778a0dc5859efe510c175c7d0fc378e66879400b84aa71a16e250d8c'
         type: string
 
 permissions:

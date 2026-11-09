@@ -32,7 +32,7 @@ async def connect(directory):
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer) as client:
             initialized = await client.initialize()
-            assert initialized.server_info.version == "1.0.0rc17"
+            assert initialized.server_info.version == "1.0.0rc18"
             yield client
 
 
@@ -40,7 +40,7 @@ async def check(directory):
     assert sys.flags.isolated
     package = Path(dandelion.__file__).resolve()
     assert "site-packages" in package.parts, package
-    assert dandelion.__version__ == "1.0.0rc17"
+    assert dandelion.__version__ == "1.0.0rc18"
     async with connect(directory) as client:
         fact = await call(client, "create_fact", {"subject": "demo.port", "value": "8080"})
         note = await call(client, "remember_typed", {
@@ -59,16 +59,25 @@ async def check(directory):
         assert old["value"] == "8080"
         read = await call(client, "read_memory", {"memory_id": note["memory_id"]})
         assert read["text"] == "Now: 8081; before: 8080"
+        standalone = await call(client, "create_fact", {"subject": "demo.standalone", "value": "retained"})
         studio = await call(client, "open_studio")
         with urlopen(studio["url"], timeout=10) as response:
             page = response.read()
             assert response.status == 200
             assert b"timeline-date" in page and b"memory-edit-form" in page
+            assert b'id="include-history"' in page
+        with urlopen(studio["url"] + "memory", timeout=10) as response:
+            snapshot = json.load(response)
+        assert snapshot["owner"]["package_version"] == "1.0.0rc18"
+        facts = {row["key"]: row for row in snapshot["facts"]}
+        assert facts[standalone["key"]]["current"]["value"] == "retained"
+        assert facts[fact["key"]]["current"]["value"] == "8081"
+        assert {row["revision"]: row["value"] for row in facts[fact["key"]]["revisions"]} == {1: "8080", 2: "8081"}
 
 
 if __name__ == "__main__":
     with tempfile.TemporaryDirectory(prefix="dandelion-portability-") as temp:
         asyncio.run(asyncio.wait_for(check(Path(temp)), timeout=90))
-    print(json.dumps({"status": "PASS", "release": "1.0.0rc17",
+    print(json.dumps({"status": "PASS", "release": "1.0.0rc18",
                       "platform": sys.platform, "python": sys.version.split()[0],
                       "scope": "installed stdio and Studio HTTP; not desktop client or agent quality"}))
