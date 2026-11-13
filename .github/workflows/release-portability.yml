@@ -19,8 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Install immutable public rc18 (no source installation)
-        run: python -m pip install "https://github.com/who1900/dandelion-releases/releases/download/v1.0.0rc18/dandelion_memory-1.0.0rc18-py3-none-any.whl#sha256=2746c281778a0dc5859efe510c175c7d0fc378e66879400b84aa71a16e250d8c"
+      - name: Install immutable public rc19 (no source installation)
+        run: python -m pip install "https://github.com/who1900/dandelion-releases/releases/download/v1.0.0rc19/dandelion_memory-1.0.0rc19-py3-none-any.whl#sha256=b4400d6ba00a4e4b87338e7414ed8c72ad782fc86eaa1c7a2081271680edbfc4"
       - run: python -m pip check
       - name: Native stdio reconnect and Studio delivery
         run: python -I ci/check_installed_release.py
