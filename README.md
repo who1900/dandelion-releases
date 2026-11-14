@@ -1,12 +1,12 @@
-# Dandelion rc19: quick start for pilot testers
+# Dandelion rc20: quick start for pilot testers
 
 Dandelion gives your agent a map of project context linked to exact values and
 history. Studio lets you explore that memory visually.
 
-rc19 makes retained originals visible when reading notes and independently
-browsable from domain shelves, with ready read links and literal heading outlines.
-The domain map stays lightweight; it does not read original contents. Stored data and history
-are preserved. Dandelion Software License 1.0 continues to apply.
+rc20 fixes delivery of complete large memory responses and reads only the selected
+page's original contents when browsing a domain. Stored data, history and rc19
+artifacts are preserved. No schema migration or new MCP tool is required.
+Dandelion Software License 1.0 continues to apply.
 Independent solo developers may use it free, including on their own commercial
 projects. Teams and use on behalf of organizations with other people require a
 commercial license. Team trials, redistribution and resale require permission.
@@ -14,11 +14,11 @@ Contact danik1900@gmail.com. [Read the license](https://github.com/who1900/dande
 before using the package. This is source-available software.
 
 If you already use an earlier release, change only the `--from` value in the existing entry to
-`dandelion-memory==1.0.0rc19`, keep
+`dandelion-memory==1.0.0rc20`, keep
 your memory folder and reconnect yourself. Do not create a second entry or a new
 memory. Existing data and historical attribution remain unchanged.
 
-Try **one real project over two work sessions**, using **rc19 on Windows 11 with
+Try **one real project over two work sessions**, using **rc20 on Windows 11 with
 local Codex**. The preceding rc15 [installed-package check](https://github.com/who1900/dandelion-releases/actions/runs/42515571580) also passed on Linux/macOS runners;
 this does not yet verify their desktop clients or interactive Studio experience.
 Other client/platform combinations remain outside the supported pilot.
@@ -37,7 +37,7 @@ with doubled backslashes. Edit any existing Dandelion entry instead of duplicati
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "dandelion-memory==1.0.0rc19", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "dandelion-memory==1.0.0rc20", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
@@ -103,7 +103,7 @@ Mark unused features **not tried**.
 
 ```text
 Environment: Windows version, MCP client/version, agent/model
-Release: rc19
+Release: rc20
 Installation and Studio: worked / blocked / not tried; time or error
 Real task: one sentence
 New session: useful context recovered; missing or wrong details
@@ -119,7 +119,7 @@ Failed installations count as feedback too.
 ## If setup stops
 
 - **Download failed:** check access to the
-  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc19/)
+  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc20/)
   and keep the error. This setup does not require Git credentials.
 - **`uvx` not found:** in PowerShell run `(Get-Command uvx).Source`; use that
   absolute path as `command` in the entry, escaping backslashes as above.
@@ -128,6 +128,6 @@ Failed installations count as feedback too.
 
 Memory retains explicit agent writes; it does not automatically archive chats or
 guarantee correct answers. Team cloud sync is outside this pilot.
-Keep rc19 fixed during the pilot. A future update changes only the version in
+Keep rc20 fixed during the pilot. A future update changes only the version in
 `dandelion-memory==...` in the same MCP entry, followed by a normal reconnect; keep the same
 memory folder. Do not add a second server or change the memory path to update.
