@@ -1,131 +1,39 @@
-# Dandelion rc21: quick start for pilot testers
+# Try Dandelion rc21 on your own project
 
-Dandelion gives your agent a map of project context linked to exact values and
-history. Studio lets you explore that memory visually.
-
-Attach selected source text to a note with `remember_typed(original_text=...)`. Studio opens on the active map while details and history load.
-Dandelion Software License 1.0 continues to apply.
-Independent solo developers may use it free, including on their own commercial
-projects. Teams and use on behalf of organizations with other people require a
-commercial license. Team trials, redistribution and resale require permission.
-Contact danik1900@gmail.com. [Read the license](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
-before using the package. This is source-available software.
-
-If you already use an earlier release, change only the `--from` value in the existing entry to
-`dandelion-memory==1.0.0rc21`, keep
-your memory folder and reconnect yourself. Do not create a second entry or a new
-memory. Existing data and historical attribution remain unchanged.
-
-Try **one real project over two work sessions**, using **rc21 on Windows 11 with
-local Codex**. The preceding rc15 [installed-package check](https://github.com/who1900/dandelion-releases/actions/runs/42515571580) also passed on Linux/macOS runners;
-this does not yet verify their desktop clients or interactive Studio experience.
-Other client/platform combinations remain outside the supported pilot.
+Pick one unfinished task you would normally work on across two sessions. The pilot runs on Windows 11 with local Codex. Use a project you can inspect and a dedicated memory folder for it. Independent solo use is free. For a team trial, contact danik1900@gmail.com. [License](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
 
 ## 1. Connect once
 
-You need [uv](https://docs.astral.sh/uv/getting-started/installation/) and local
-Codex. The package is downloaded automatically from PyPI;
-no Git installation, repository invitation or GitHub sign-in is needed.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed. Create a permanent folder outside your repository for this project's memory. In PowerShell:
 
-Create a permanent memory folder outside your source repository; it must exist
-before the first connection. Add this entry
-to `%USERPROFILE%\.codex\config.toml`, substituting the folder's **absolute path**
-with doubled backslashes. Edit any existing Dandelion entry instead of duplicating it.
+```powershell
+$memoryPath = Join-Path $env:LOCALAPPDATA 'Dandelion\workspaces\my-project'
+(New-Item -ItemType Directory -Force -Path $memoryPath).FullName
+```
+
+In `%USERPROFILE%\.codex\config.toml`, add the entry below. Replace `PASTE_FOLDER_PATH_HERE` with the printed path, keeping the single quotes. If Dandelion is already registered for this project, keep its folder and change only the package version in the existing entry.
 
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "dandelion-memory==1.0.0rc21", "--python", "3.13", "dandelion", "serve", "--memory-path", "C:\\path\\to\\existing\\memory", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "dandelion-memory==1.0.0rc21", "--python", "3.13", "dandelion", "serve", "--memory-path", 'PASTE_FOLDER_PATH_HERE', "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
-Apply the configuration through Codex's MCP controls. In the verified desktop
-build, after changing the entry use **Restart** (the circular arrow beside
-**Servers**). The enable switch alone did not refresh an already open chat.
-Labels may differ between client versions. Ask the agent to call `domain_map`:
-an empty successful map is a valid first connection; an enabled switch alone
-is not confirmation. If tools remain unavailable, record the client version and
-error instead of repeatedly toggling or reinstalling.
+Apply the change in Codex MCP settings using **Restart** beside **Servers**. The first connection downloads rc21 from PyPI and includes Studio. Ask your agent to **call `domain_map`**. An empty map is a successful connection to fresh memory. Chats using this entry share its folder.
 
-The first connection downloads the package,
-its dependencies and Python 3.13 if needed; internet access is required.
-**Studio is included**; no separate app, database or Dandelion API key is needed.
+## 2. Build the map while doing real work
 
-Chats using this entry share its memory. Use it for the chosen project and keep
-the same folder in both sessions; switching projects does not switch memory.
+Open the project in Codex. Replace the brackets and give your agent this prompt:
 
-## 2. Work normally, then open Studio
+> My task is [real task]. Read the Dandelion map, then inspect the README and the code and docs relevant to this task. Build a small map using the project's own names. Record how the relevant parts fit together and why important decisions were made. Link exact values to their sources. Attach a short original excerpt when its wording matters. Flag anything you could not verify. Start the task. Before we stop, save what changed, what is still open, and the next concrete action.
 
-In your project chat, ask:
+Ask **“Open Dandelion Studio using `open_studio`.”** Open the returned local link. Select a node for your task and read it in **Inspector**. If a detail needs correcting, edit it and give the reason. **Timeline** shows the recorded change.
 
-> Use Dandelion as memory for this project. Read its domain map first. Read this
-> project's code and main documentation to organize goals, modules, decisions and
-> current work. Keep inspection within this project. Link exact values using the
-> references returned by the tools. Preserve sources, uncertainty and history.
-> Before changes, read relevant notes; afterward, save what changed and why.
-> Keep a short working note for the next session.
+## 3. Continue in a fresh chat
 
-Do a real development task, then ask the agent to save progress and the next action.
-To see the memory, ask:
+Open a new Codex chat in the same project with the same MCP entry. Give it only the task name. Leave the old transcript, note IDs and your own recap out of the prompt.
 
-> Open Dandelion Studio.
+> Continue [task name]. Use Dandelion to recover where we left off and why. Tell me the next step, check it against the current code, and carry it out. Save the outcome for the next session.
 
-Open the local link. Rotate, zoom and select nodes to inspect notes, facts and
-history. Studio refreshes while visible. An initially empty map is normal.
-
-Use **Timeline** to choose a date and inspect recorded changes, available diffs
-and author labels. Older unattributed changes say **Author not recorded**.
-When a note or value genuinely needs correction, use **Edit note** or **Edit
-current value**, give a reason and save. Previous versions and linked history
-remain available. Source-managed records and captured originals are not editable
-here; ask the agent to use the appropriate memory tools. A revised decision
-needs acceptance again. You can also request corrections through the agent.
-
-## 3. Continue in a new session
-
-Start a new project chat with the same MCP entry, without pasting the previous
-transcript or record IDs:
-
-> Continue work on [your task]. Start from Dandelion's domain map and working
-> note. Explain the current goal, the important decisions and the next action.
-> Read linked exact values and relevant history, then check current code as needed.
-
-When real work changes a value, correct the existing fact and inspect its history
-in Studio. Do not invent changes for the pilot. After reconnecting MCP, ask to
-open Studio again for its current link.
-
-## 4. Send brief feedback
-
-Reply to your inviter or open an [issue](https://github.com/who1900/dandelion-releases/issues/new).
-Mark unused features **not tried**.
-
-```text
-Environment: Windows version, MCP client/version, agent/model
-Release: rc21
-Installation and Studio: worked / blocked / not tried; time or error
-Real task: one sentence
-New session: useful context recovered; missing or wrong details
-Exact values/history: worked / blocked / not tried; one example
-Studio editing/timeline: worked / blocked / not tried; one example
-Expected vs observed: the concrete difference, if any
-Would you keep using it? Why?
-```
-
-Send a relevant excerpt or screenshot, not your database or credentials.
-Failed installations count as feedback too.
-
-## If setup stops
-
-- **Download failed:** check access to the
-  [package page](https://pypi.org/project/dandelion-memory/1.0.0rc21/)
-  and keep the error. This setup does not require Git credentials.
-- **`uvx` not found:** in PowerShell run `(Get-Command uvx).Source`; use that
-  absolute path as `command` in the entry, escaping backslashes as above.
-- **Startup timeout, client crash or inaccessible tools:** keep the error and
-  report it. Do not repeatedly toggle MCP, add another server or delete memory.
-
-Memory retains explicit agent writes; it does not automatically archive chats or
-guarantee correct answers. Team cloud sync is outside this pilot.
-Keep rc21 fixed during the pilot. A future update changes only the version in
-`dandelion-memory==...` in the same MCP entry, followed by a normal reconnect; keep the same
-memory folder. Do not add a second server or change the memory path to update.
+**Send your inviter three lines:** Did installation and Studio work? What did the new agent recover correctly? What did you have to repeat or correct? If setup failed, include the error with private paths or credentials removed.
