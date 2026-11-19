@@ -1,4 +1,4 @@
-# Try Dandelion rc21 on your own project
+# Try Dandelion rc22 on your own project
 
 Pick one unfinished task you would normally work on across two sessions. The pilot runs on Windows 11 with local Codex. Use a project you can inspect and a dedicated memory folder for it. Independent solo use is free. For a team trial, contact danik1900@gmail.com. [License](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
 
@@ -16,11 +16,11 @@ In `%USERPROFILE%\.codex\config.toml`, add the entry below. Replace `PASTE_FOLDE
 ```toml
 [mcp_servers.dandelion]
 command = "uvx"
-args = ["--isolated", "--from", "dandelion-memory==1.0.0rc21", "--python", "3.13", "dandelion", "serve", "--memory-path", 'PASTE_FOLDER_PATH_HERE', "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+args = ["--isolated", "--from", "dandelion-memory==1.0.0rc22", "--python", "3.13", "dandelion", "serve", "--memory-path", 'PASTE_FOLDER_PATH_HERE', "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
 startup_timeout_sec = 120
 ```
 
-Apply the change in Codex MCP settings using **Restart** beside **Servers**. The first connection downloads rc21 from PyPI and includes Studio. Ask your agent to **call `domain_map`**. An empty map is a successful connection to fresh memory. Chats using this entry share its folder.
+Apply the change in Codex MCP settings using **Restart** beside **Servers**. The first connection downloads rc22 from PyPI and includes Studio. Ask your agent to **call `domain_map`**. An empty map is a successful connection to fresh memory. Chats using this entry share its folder.
 
 ## 2. Build the map while doing real work
 
