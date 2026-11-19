@@ -3,6 +3,7 @@ import asyncio
 from contextlib import asynccontextmanager
 import json
 import os
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -32,7 +33,7 @@ async def connect(directory):
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer) as client:
             initialized = await client.initialize()
-            assert initialized.server_info.version == "1.0.0rc19"
+            assert initialized.server_info.version == "1.0.0rc21"
             yield client
 
 
@@ -40,11 +41,12 @@ async def check(directory):
     assert sys.flags.isolated
     package = Path(dandelion.__file__).resolve()
     assert "site-packages" in package.parts, package
-    assert dandelion.__version__ == "1.0.0rc19"
+    assert dandelion.__version__ == "1.0.0rc21"
+    original = "Selected excerpt: λ\r\nKeep spacing.  \n"
     async with connect(directory) as client:
         fact = await call(client, "create_fact", {"subject": "demo.port", "value": "8080"})
         note = await call(client, "remember_typed", {
-            "domain": "demo", "record_kind": "OBSERVATION", "disposition": "ACTIVE",
+            "original_text": original, "domain": "demo", "record_kind": "OBSERVATION", "disposition": "ACTIVE",
             "content": "Now: " + fact["reference_templates"]["live"]
                        + "; before: " + fact["reference_templates"]["pinned"],
         })
@@ -58,6 +60,8 @@ async def check(directory):
         old = await call(client, "get_fact", {"key": fact["key"], "revision": 1})
         assert old["value"] == "8080"
         read = await call(client, "read_memory", {"memory_id": note["memory_id"]})
+        assert len(read["originals"]) == 1 and read["originals"][0]["value"] == original
+        assert read["originals"][0]["content_state"] == "COMPLETE"
         assert read["text"] == "Now: 8081; before: 8080"
         standalone = await call(client, "create_fact", {"subject": "demo.standalone", "value": "retained"})
         studio = await call(client, "open_studio")
@@ -66,9 +70,14 @@ async def check(directory):
             assert response.status == 200
             assert b"timeline-date" in page and b"memory-edit-form" in page
             assert b'id="include-history"' in page
+        embedded = re.search(rb'<script id="snapshot" type="application/json">(.*?)</script>', page, re.S)
+        overview = json.loads(embedded.group(1))
+        assert overview["live"]["map_only"] is True
+        assert note["memory_id"] in {row["memory_id"] for row in overview["memories"]}
+        assert standalone["key"] in {row["key"] for row in overview["facts"]}
         with urlopen(studio["url"] + "memory", timeout=10) as response:
             snapshot = json.load(response)
-        assert snapshot["owner"]["package_version"] == "1.0.0rc19"
+        assert snapshot["owner"]["package_version"] == "1.0.0rc21"
         facts = {row["key"]: row for row in snapshot["facts"]}
         assert facts[standalone["key"]]["current"]["value"] == "retained"
         assert facts[fact["key"]]["current"]["value"] == "8081"
@@ -78,6 +87,6 @@ async def check(directory):
 if __name__ == "__main__":
     with tempfile.TemporaryDirectory(prefix="dandelion-portability-") as temp:
         asyncio.run(asyncio.wait_for(check(Path(temp)), timeout=90))
-    print(json.dumps({"status": "PASS", "release": "1.0.0rc19",
+    print(json.dumps({"status": "PASS", "release": "1.0.0rc21",
                       "platform": sys.platform, "python": sys.version.split()[0],
                       "scope": "installed stdio and Studio HTTP; not desktop client or agent quality"}))
