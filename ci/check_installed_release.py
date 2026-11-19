@@ -33,7 +33,7 @@ async def connect(directory):
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer) as client:
             initialized = await client.initialize()
-            assert initialized.server_info.version == "1.0.0rc22"
+            assert initialized.server_info.version == "1.0.0rc23"
             yield client
 
 
@@ -41,7 +41,7 @@ async def check(directory):
     assert sys.flags.isolated
     package = Path(dandelion.__file__).resolve()
     assert "site-packages" in package.parts, package
-    assert dandelion.__version__ == "1.0.0rc22"
+    assert dandelion.__version__ == "1.0.0rc23"
     original = "Selected excerpt: λ\r\nKeep spacing.  \n"
     async with connect(directory) as client:
         fact = await call(client, "create_fact", {"subject": "demo.port", "value": "8080"})
@@ -77,7 +77,7 @@ async def check(directory):
         assert standalone["key"] in {row["key"] for row in overview["facts"]}
         with urlopen(studio["url"] + "memory", timeout=10) as response:
             snapshot = json.load(response)
-        assert snapshot["owner"]["package_version"] == "1.0.0rc22"
+        assert snapshot["owner"]["package_version"] == "1.0.0rc23"
         facts = {row["key"]: row for row in snapshot["facts"]}
         assert facts[standalone["key"]]["current"]["value"] == "retained"
         assert facts[fact["key"]]["current"]["value"] == "8081"
@@ -87,6 +87,6 @@ async def check(directory):
 if __name__ == "__main__":
     with tempfile.TemporaryDirectory(prefix="dandelion-portability-") as temp:
         asyncio.run(asyncio.wait_for(check(Path(temp)), timeout=90))
-    print(json.dumps({"status": "PASS", "release": "1.0.0rc22",
+    print(json.dumps({"status": "PASS", "release": "1.0.0rc23",
                       "platform": sys.platform, "python": sys.version.split()[0],
                       "scope": "installed stdio and Studio HTTP; not desktop client or agent quality"}))
