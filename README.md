@@ -1,22 +1,26 @@
 # Try Dandelion rc23 on your own project
 
-Pick one unfinished task you would normally work on across two sessions. The pilot runs on Windows 11 with local Codex. Use a project you can inspect and a dedicated memory folder for it. Independent solo use is free. For a team trial, contact danik1900@gmail.com. [License](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
+Pick one unfinished task you would normally work on across two sessions. You can join with any agent client that can launch a **local stdio MCP server**. Windows 11 with local Codex is the verified rc23 setup. Other OS and client combinations are welcome; tell your inviter which you use. Independent solo use is free. For a team trial, contact danik1900@gmail.com. [License](https://github.com/who1900/dandelion-releases/blob/main/LICENSING.md)
 
 ## 1. Connect once
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed. Open the intended project folder in Codex.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed. Open your project in your agent client.
 
 - **Already used Dandelion on this project?** Keep the existing `--memory-path` and registration. Check the path in the entry and skip folder creation. The same folder carries the project's history across chats and package updates.
-- **First time using Dandelion on this project?** Choose a unique folder name, whether the repository is empty or years old. Replace `my-project` below with that name and run this in PowerShell. Pick a different name if another project already uses it.
+- **First time using Dandelion on this project?** Create an empty, permanent folder for its memory, outside your repository. Give it a unique project name. Use your file manager and copy the absolute path, or use the Windows example below with your own project name.
 
 ```powershell
 $memoryPath = Join-Path $env:LOCALAPPDATA 'Dandelion\workspaces\my-project'
 (New-Item -ItemType Directory -Force -Path $memoryPath).FullName
 ```
 
-For a fresh registration, put the entry below in `.codex/config.toml` inside the trusted project folder (create the directory and file if needed). Keep this machine-specific path local. Replace `PASTE_FOLDER_PATH_HERE` with the printed path, keeping the single quotes.
+**In your client's MCP settings**, choose a local stdio server named `dandelion`. Set the command to `uvx` and use these arguments in order, one entry per argument. Replace the placeholder with the absolute path to the folder you chose. If your client cannot find `uvx`, use the full path printed by `command -v uvx` (macOS/Linux) or `(Get-Command uvx).Source` (Windows PowerShell).
 
-An entry in `%USERPROFILE%\.codex\config.toml` is user-wide: opening another repository still uses that folder. If this project already uses that entry, keep it for this pilot. For a different project, configure its own project-local entry under the same name, with its own path. Leave the first project's path intact.
+```json
+["--isolated", "--from", "dandelion-memory==1.0.0rc23", "--python", "3.13", "dandelion", "serve", "--memory-path", "PASTE_FOLDER_PATH_HERE", "--local-owner", "--access-mode", "trusted-local", "--lifecycle-v1"]
+```
+
+**Codex example.** If you use Codex, you can enter the same settings in `.codex/config.toml` inside the trusted project folder. Keep this machine-specific path local. An existing user-wide entry uses the same memory across projects. Keep its path when returning to a project.
 
 ```toml
 [mcp_servers.dandelion]
@@ -25,7 +29,7 @@ args = ["--isolated", "--from", "dandelion-memory==1.0.0rc23", "--python", "3.13
 startup_timeout_sec = 120
 ```
 
-After a configuration change, use **Restart** beside **Servers** in Codex MCP settings. The first connection downloads rc23 from PyPI and includes Studio. Before saving anything, ask the agent to call `domain_map` and open Studio with `open_studio`. Check the **Workspace** name against the memory folder you chose. Fresh memory starts with an empty map, even in a mature repository. Returning to an existing memory should show its familiar domains. If either looks unexpected, check the configured path before continuing.
+Apply the settings and connect using your client's MCP controls (in Codex, **Restart** beside **Servers**). The first connection downloads rc23 from PyPI and includes Studio. Before saving anything, ask the agent to call `domain_map` and open Studio with `open_studio`. Check the **Workspace** name against the memory folder you chose. Fresh memory starts with an empty map, even in a mature repository. Returning to an existing memory should show its familiar domains. If either looks unexpected, check the configured path before continuing.
 
 ## 2. Build the map while doing real work
 
@@ -43,7 +47,7 @@ In Studio, select a node for your task and read it in **Inspector**. If a detail
 
 ## 3. Continue in a fresh chat
 
-Open a new Codex chat in the same project with the same MCP entry. Give it only the task name. Leave the old transcript, note IDs and your own recap out of the prompt.
+Start a fresh session in your client with the same project and memory folder. Give it only the task name. Leave the old transcript, note IDs and your own recap out of the prompt.
 
 > Continue [task name]. Use Dandelion to recover where we left off and why. Tell me the next step, check it against the current code, and carry it out. Save the outcome for the next session.
 
@@ -51,7 +55,7 @@ Open a new Codex chat in the same project with the same MCP entry. Give it only 
 
 ## 4. Try two lookups in a separate test memory
 
-After the real task, open an empty test project in Codex. Follow step 1 with a **new, empty memory folder** (for example, `pilot-probe-01`) and a project-local MCP entry. Confirm that Studio shows that workspace before writing. Leave your real project's settings and memory as they are.
+After the real task, open an empty test project in your client. Follow step 1 with a **new, empty memory folder** (for example, `pilot-probe-01`). Prefer project-local settings. If your client has only one global entry, save the real project's path, disconnect, change `--memory-path` to the test folder and reconnect. Confirm the test workspace in Studio before writing. Restore the real path and reconnect when you finish the probe.
 
 **Setup chat.** Give the agent this prompt once:
 
