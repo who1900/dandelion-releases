@@ -49,4 +49,17 @@ Open a new Codex chat in the same project with the same MCP entry. Give it only 
 
 **Send your inviter three lines:** Did installation and Studio work? What did the new agent recover correctly? What did you have to repeat or correct? If setup failed, include the error with private paths or credentials removed.
 
-If a lookup came up empty or matched more than one record during your real task, add one sentence: what did the agent do next, and did you need to step in? For example, did it check a source, ask which record you meant, or choose a value on its own? If neither situation arose, “not encountered” is enough. No extra lookup is needed.
+## 4. Try two lookups in a separate test memory
+
+After the real task, open an empty test project in Codex. Follow step 1 with a **new, empty memory folder** (for example, `pilot-probe-01`) and a project-local MCP entry. Confirm that Studio shows that workspace before writing. Leave your real project's settings and memory as they are.
+
+**Setup chat.** Give the agent this prompt once:
+
+> Create two separate exact facts with `create_fact`. Use the identical subject `pilot.worker.port` for both, with values `8080` and `9090`. Check that the returned keys differ. Then use `get_fact` by name to verify that `pilot.worker.port` returns `AMBIGUOUS_NAME` with those two keys and `pilot.scheduler.port` returns `FACT_NOT_FOUND`. Report whether setup succeeded.
+
+If setup fails, report the setup issue and stop the probe. Once it succeeds, open a **fresh chat in the test project**. Give the agent only these questions, one at a time:
+
+1. What value does Dandelion have for `pilot.scheduler.port`?
+2. What value does Dandelion have for `pilot.worker.port`?
+
+For each question, note the agent's first response before helping. Send your inviter one line per name: **What did the agent do next? Did you have to step in, and if so, how?** Keep these observations separate from feedback on your real task.
