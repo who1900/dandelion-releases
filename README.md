@@ -48,3 +48,5 @@ Open a new Codex chat in the same project with the same MCP entry. Give it only 
 > Continue [task name]. Use Dandelion to recover where we left off and why. Tell me the next step, check it against the current code, and carry it out. Save the outcome for the next session.
 
 **Send your inviter three lines:** Did installation and Studio work? What did the new agent recover correctly? What did you have to repeat or correct? If setup failed, include the error with private paths or credentials removed.
+
+If a lookup came up empty or matched more than one record during your real task, add one sentence: what did the agent do next, and did you need to step in? For example, did it check a source, ask which record you meant, or choose a value on its own? If neither situation arose, “not encountered” is enough. No extra lookup is needed.
